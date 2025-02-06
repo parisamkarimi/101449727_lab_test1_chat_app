@@ -1,15 +1,61 @@
-<input id="message" placeholder="Type a message..." />
-<button id="send">Send</button>
-<ul id="messages"></ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2>Chat Room</h2>
+        <div id="room-list">
+            <button class="btn btn-primary" onclick="joinRoom('devops')">DevOps</button>
+            <button class="btn btn-primary" onclick="joinRoom('covid19')">COVID19</button>
+            <button class="btn btn-primary" onclick="joinRoom('sports')">Sports</button>
+        </div>
+        <div id="messages"></div>
+        <input type="text" id="message" class="form-control" placeholder="Type a message" onkeyup="typing()">
+        <button id="send" class="btn btn-success">Send</button>
+        <button onclick="logout()" class="btn btn-danger">Logout</button>
+    </div>
 
-<script>
-  const socket = io();
-  document.getElementById("send").addEventListener("click", () => {
-    const message = document.getElementById("message").value;
-    socket.emit("chatMessage", { from_user: "user", message });
-  });
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const token = localStorage.getItem('token');
+        let currentRoom = '';
 
-  socket.on("message", (msg) => {
-    document.getElementById("messages").innerHTML += `<li>${msg.from_user}: ${msg.message}</li>`;
-  });
-</script>
+        $('#send').click(function() {
+            const message = $('#message').val();
+            socket.emit('chatMessage', { username: 'user', message });
+            $('#message').val('');
+        });
+
+        function joinRoom(room) {
+            currentRoom = room;
+            socket.emit('joinRoom', room);
+            $('#room-list').hide();
+        }
+
+        function typing() {
+            socket.emit('typing', { username: 'user' });
+        }
+
+        socket.on('message', (msg) => {
+            $('#messages').append('<p>' + msg.username + ': ' + msg.message + '</p>');
+        });
+
+        socket.on('typing', (data) => {
+            $('#messages').append('<p>' + data.username + ' is typing...</p>');
+        });
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/login.html';
+        }
+    </script>
+</body>
+</html>
+

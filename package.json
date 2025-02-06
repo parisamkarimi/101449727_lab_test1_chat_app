@@ -3,10 +3,21 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "��#\u0000 \u00001\u00000\u00001\u00004\u00004\u00009\u00007\u00002\u00007\u0000_\u0000l\u0000a\u0000b\u0000_\u0000t\u0000e\u0000s\u0000t\u00001\u0000_\u0000c\u0000h\u0000a\u0000t\u0000_\u0000a\u0000p\u0000p\u0000\r\u0000 \u0000",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.10.0",
+    "socket.io": "^4.8.1"
+  }
 }
